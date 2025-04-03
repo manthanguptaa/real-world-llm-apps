@@ -4,7 +4,7 @@ Welcome to a curated collection of practical applications powered by Large Langu
 
 ## 🌟 Overview
 
-This repository contains production-ready applications that leverage state-of-the-art language models to solve real-world problems. Each project includes comprehensive documentation, code, and deployment instructions to help you understand and implement LLM-powered solutions.
+This repository contains production-ready applications that leverage state-of-the-art language models to solve real-world problems. Each project includes comprehensive documentation, and code, to help you understand and implement LLM-powered solutions.
 
 ## 🚀 Featured Applications
 
