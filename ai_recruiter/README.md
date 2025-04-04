@@ -1,0 +1,152 @@
+# Resume Filter Application
+
+A Streamlit application that helps recruiters filter resumes based on job descriptions. The application rates resumes against a job description using AI and provides a score out of 10, along with detailed feedback.
+
+## Features
+
+- Upload resumes directly or via Google Drive links (both single files and folders)
+- Support for PDF, DOCX, and TXT resume formats
+- AI-powered resume evaluation based on job descriptions (using Google's Gemini model)
+- Customizable passing score threshold
+- Results displayed in a tabular format with download option
+
+## Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd ai_recruiter
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Set up environment variables
+
+Create a `.env` file in the root directory with the following content:
+
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+Replace `your_gemini_api_key_here` with your actual Google Gemini API key.
+
+### 4. Set up Google Drive API credentials
+
+#### A. Creating the Google Cloud Project and Credentials
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project:
+   - Click on the project dropdown at the top of the page
+   - Click "New Project"
+   - Enter a name for your project and click "Create"
+
+3. Enable the Google Drive API:
+   - Select your project
+   - Go to "APIs & Services" > "Library"
+   - Search for "Google Drive API"
+   - Click on "Google Drive API" and then "Enable"
+
+4. Create service account credentials:
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "Service Account"
+   - Enter a name for your service account, optionally add a description
+   - Click "Create and Continue"
+   - For the role, select "Project" > "Editor" (or a more restrictive role if needed)
+   - Click "Continue" and then "Done"
+
+5. Generate a key for your service account:
+   - On the Credentials page, click on the service account you just created
+   - Go to the "Keys" tab
+   - Click "Add Key" > "Create new key"
+   - Choose "JSON" as the key type
+   - Click "Create". This will download a JSON file containing your credentials
+
+#### B. Setting up the credentials in the application
+
+You have two options for setting up the credentials:
+
+##### Option 1: Using Streamlit secrets (Recommended for deployment)
+
+1. Create a `.streamlit` directory and a `secrets.toml` file inside it:
+
+```bash
+mkdir -p .streamlit
+touch .streamlit/secrets.toml
+```
+
+2. Add your Google Drive credentials to the `secrets.toml` file:
+
+```toml
+[google_credentials]
+type = "service_account"
+project_id = "your-project-id"
+private_key_id = "your-private-key-id"
+private_key = "your-private-key"
+client_email = "your-client-email"
+client_id = "your-client-id"
+auth_uri = "https://accounts.google.com/o/oauth2/auth"
+token_uri = "https://oauth2.googleapis.com/token"
+auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs"
+client_x509_cert_url = "your-client-cert-url"
+```
+
+Fill in the values from the JSON file you downloaded.
+
+##### Option 2: Using environment variables (Recommended for local development)
+
+Add the following to your `.env` file:
+
+```
+GOOGLE_DRIVE_TYPE=service_account
+GOOGLE_DRIVE_PROJECT_ID=your-project-id
+GOOGLE_DRIVE_PRIVATE_KEY_ID=your-private-key-id
+GOOGLE_DRIVE_PRIVATE_KEY=your-private-key
+GOOGLE_DRIVE_CLIENT_EMAIL=your-client-email
+GOOGLE_DRIVE_CLIENT_ID=your-client-id
+GOOGLE_DRIVE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
+GOOGLE_DRIVE_TOKEN_URI=https://oauth2.googleapis.com/token
+GOOGLE_DRIVE_AUTH_PROVIDER_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
+GOOGLE_DRIVE_CLIENT_CERT_URL=your-client-cert-url
+```
+
+Fill in the values from the JSON file you downloaded.
+
+#### C. Sharing Google Drive files with the service account
+
+To access files in Google Drive, you need to share them with the service account:
+
+1. Find the `client_email` value in your credentials JSON file (it looks like `name@project-id.iam.gserviceaccount.com`)
+2. In Google Drive, right-click on the file or folder you want to share
+3. Click "Share"
+4. Enter the service account email address
+5. Set the permission to "Viewer" (or "Editor" if needed)
+6. Click "Send"
+
+### 5. Run the application
+
+```bash
+streamlit run app.py
+```
+
+## Usage
+
+1. Enter the job description in the provided text area
+2. Choose how to upload resumes:
+   - Upload files directly: Select and upload resume files from your computer
+   - Google Drive link: Provide a link to a Google Drive file or folder containing resumes
+3. Adjust the minimum passing score threshold using the slider
+4. Click "Evaluate Resumes" to start the evaluation process
+5. View the results in the tabular format, sorted by passed and failed resumes
+6. Download the evaluation results as a CSV file if needed
+
+## Note
+
+- The application uses Google's Gemini Pro model to evaluate resumes
+- Make sure the resumes are in PDF, DOCX, or TXT format
+- For Google Drive access, ensure the service account has proper access to the files/folders
+- When using the private key in environment variables, you may need to replace newlines with "\n" 
