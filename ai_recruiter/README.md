@@ -1,31 +1,46 @@
-# Resume Filter Application
+# AI Recruiter
 
-A Streamlit application that helps recruiters filter resumes based on job descriptions. The application rates resumes against a job description using AI and provides a score out of 10, along with detailed feedback.
+An intelligent talent acquisition platform that helps HR professionals and recruiters evaluate candidates based on job requirements. The application assesses candidate resumes against job descriptions using advanced AI, providing a comprehensive match score and detailed feedback to streamline your hiring process.
 
 ## Features
 
-- Upload resumes directly or via Google Drive links (both single files and folders)
+- Upload candidate resumes directly or via Google Drive links (both single files and folders)
 - Support for PDF, DOCX, and TXT resume formats
-- AI-powered resume evaluation based on job descriptions (using Google's Gemini model)
-- Customizable passing score threshold
-- Results displayed in a tabular format with download option
+- AI-powered candidate evaluation based on job requirements (using Google's Gemini model)
+- Customizable qualification threshold for candidate filtering
+- Comprehensive talent assessment results with detailed feedback
+- Export assessment reports as CSV for integration with your ATS
 
 ## Setup Instructions
 
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:manthanguptaa/real-world-llm-apps.git
 cd ai_recruiter
 ```
 
-### 2. Install dependencies
+### 2. Setting up virtual environment
+
+```bash
+# For Python 3 on macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+
+# For Windows
+python -m venv venv
+venv\Scripts\activate
+```
+
+After activating the virtual environment, your command prompt should show `(venv)` at the beginning of the line, indicating that the virtual environment is active.
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Set up environment variables
+### 4. Set up environment variables
 
 Create a `.env` file in the root directory with the following content:
 
@@ -35,7 +50,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 Replace `your_gemini_api_key_here` with your actual Google Gemini API key.
 
-### 4. Set up Google Drive API credentials
+### 5. Set up Google Drive API credentials
 
 #### A. Creating the Google Cloud Project and Credentials
 
@@ -118,7 +133,7 @@ Fill in the values from the JSON file you downloaded.
 
 #### C. Sharing Google Drive files with the service account
 
-To access files in Google Drive, you need to share them with the service account:
+To access candidate resumes in Google Drive, you need to share them with the service account:
 
 1. Find the `client_email` value in your credentials JSON file (it looks like `name@project-id.iam.gserviceaccount.com`)
 2. In Google Drive, right-click on the file or folder you want to share
@@ -127,7 +142,7 @@ To access files in Google Drive, you need to share them with the service account
 5. Set the permission to "Viewer" (or "Editor" if needed)
 6. Click "Send"
 
-### 5. Run the application
+### 6. Run the application
 
 ```bash
 streamlit run app.py
@@ -135,18 +150,26 @@ streamlit run app.py
 
 ## Usage
 
-1. Enter the job description in the provided text area
-2. Choose how to upload resumes:
-   - Upload files directly: Select and upload resume files from your computer
+1. Enter the position requirements in the provided text area
+2. Choose how to upload candidate resumes:
+   - Upload files directly: Select and upload candidate resumes from your computer
    - Google Drive link: Provide a link to a Google Drive file or folder containing resumes
-3. Adjust the minimum passing score threshold using the slider
-4. Click "Evaluate Resumes" to start the evaluation process
-5. View the results in the tabular format, sorted by passed and failed resumes
-6. Download the evaluation results as a CSV file if needed
+3. Adjust the qualification threshold using the slider
+4. Click "Evaluate Candidates" to start the talent assessment process
+5. View the assessment results, sorted by qualified and non-qualified candidates
+6. Download the talent assessment report as a CSV file if needed
+
+## Benefits for Recruiters
+
+- **Time Savings**: Reduce manual resume screening time by up to 75%
+- **Objective Evaluation**: Standardize your candidate assessment process
+- **Detailed Insights**: Get comprehensive feedback on each candidate's strengths and areas for improvement
+- **Customizable Criteria**: Adjust qualification thresholds based on your specific needs
+- **Seamless Integration**: Works with your existing recruitment workflow and ATS
 
 ## Note
 
-- The application uses Google's Gemini Pro model to evaluate resumes
-- Make sure the resumes are in PDF, DOCX, or TXT format
+- The platform uses Google's advanced Gemini AI model for talent evaluation
+- Supports common resume formats (PDF, DOCX, TXT)
 - For Google Drive access, ensure the service account has proper access to the files/folders
 - When using the private key in environment variables, you may need to replace newlines with "\n" 

@@ -13,7 +13,7 @@ import docx2txt
 from pathlib import Path
 import toml
 from dotenv import load_dotenv
-from agents import ResumeEvaluationAgent
+from agents import TalentEvaluationAgent
 
 # Filter out SyntaxWarnings about invalid escape sequences
 warnings.filterwarnings("ignore", category=SyntaxWarning, message="invalid escape sequence")
@@ -23,14 +23,14 @@ load_dotenv()
 
 # Set custom theme and styling
 st.set_page_config(
-    page_title="AI Recruiter",
-    page_icon="📝",
+    page_title="AI Recruiter - Talent Assessment Platform",
+    page_icon="👔",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
         'Get Help': 'https://github.com/manthangupta26/real-world-llm-apps',
         'Report a bug': 'https://github.com/manthangupta26/real-world-llm-apps/issues',
-        'About': 'AI Recruiter - Powered by Gemini AI'
+        'About': 'AI Recruiter - Intelligent Talent Acquisition Platform powered by Gemini AI'
     }
 )
 
@@ -239,7 +239,7 @@ local_css()
 # Initialize the resume evaluation agent
 @st.cache_resource
 def get_resume_agent():
-    agent = ResumeEvaluationAgent()
+    agent = TalentEvaluationAgent()
     if not agent.is_configured():
         st.error("Gemini API key not found. Please set the GEMINI_API_KEY in your .env file.")
         st.stop()
@@ -408,8 +408,8 @@ def main():
     st.markdown(
         """
         <div class="title-container">
-            <h1 class="app-title">AI Recruiter 📝</h1>
-            <p class="app-subtitle">Smart resume filtering powered by AI</p>
+            <h1 class="app-title">AI Recruiter 👔</h1>
+            <p class="app-subtitle">Intelligent Talent Acquisition Powered by AI</p>
         </div>
         """, 
         unsafe_allow_html=True
@@ -424,75 +424,75 @@ def main():
     with col1:
         # Job Description Section
         st.markdown('<div class="section-container">', unsafe_allow_html=True)
-        st.markdown('<h2 class="section-title">Job Description</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-title">Position Requirements</h2>', unsafe_allow_html=True)
         job_description = st.text_area(
             "Enter the job description here:",
             height=300,
-            placeholder="Paste the job description here. The more detailed the description, the better the evaluation."
+            placeholder="Paste the detailed job description/requirements here. The more specific you are, the better AI Recruiter can match candidates."
         )
         st.markdown('</div>', unsafe_allow_html=True)
         
         # Evaluation Settings Section
         st.markdown('<div class="section-container">', unsafe_allow_html=True)
-        st.markdown('<h2 class="section-title">Evaluation Settings</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-title">Candidate Evaluation Settings</h2>', unsafe_allow_html=True)
         score_threshold = st.slider(
-            "Minimum score to pass (out of 10):",
+            "Qualification threshold (out of 10):",
             min_value=1.0,
             max_value=10.0,
             value=7.5,
             step=0.1,
-            help="Resumes with scores above this threshold will be marked as 'Passed'"
+            help="Candidates with scores above this threshold will be marked as 'Qualified'"
         )
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
         # Resume Input Section
         st.markdown('<div class="section-container">', unsafe_allow_html=True)
-        st.markdown('<h2 class="section-title">Resume Input</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-title">Candidate Resumes</h2>', unsafe_allow_html=True)
         
         input_method = st.radio(
-            "Choose how to upload resumes:",
+            "Choose how to upload candidate resumes:",
             ("Upload files directly", "Google Drive link"),
             horizontal=True
         )
         
         if input_method == "Upload files directly":
             uploaded_files = st.file_uploader(
-                "Upload resume files (PDF, DOCX, TXT)",
+                "Upload candidate resumes (PDF, DOCX, TXT)",
                 type=["pdf", "docx", "txt"],
                 accept_multiple_files=True,
-                help="You can select multiple files at once"
+                help="You can select multiple files at once to batch process candidates"
             )
             
             if uploaded_files:
-                st.success(f"{len(uploaded_files)} file(s) uploaded successfully!")
+                st.success(f"{len(uploaded_files)} candidate resume(s) uploaded successfully!")
         
         else:  # Google Drive link
             drive_link = st.text_input(
-                "Enter Google Drive link (file or folder):",
+                "Enter Google Drive link with candidate resumes:",
                 placeholder="https://drive.google.com/file/d/... or https://drive.google.com/drive/folders/..."
             )
             
             if drive_link:
                 file_id = extract_file_id(drive_link)
                 if file_id:
-                    st.success("Valid Google Drive link!")
+                    st.success("Valid Google Drive link detected!")
                 else:
                     st.warning("Invalid Google Drive link format. Please check and try again.")
         
         # Evaluate button
-        evaluate_button = st.button("Evaluate Resumes", type="primary", use_container_width=True)
+        evaluate_button = st.button("Evaluate Candidates", type="primary", use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
     # Process resumes when button is clicked
     if evaluate_button and job_description:
-        with st.spinner("Initializing evaluation process..."):
+        with st.spinner("Initializing talent evaluation process..."):
             st.markdown('<div class="section-container">', unsafe_allow_html=True)
-            st.markdown('<h2 class="section-title">Evaluation Process</h2>', unsafe_allow_html=True)
+            st.markdown('<h2 class="section-title">Talent Evaluation Process</h2>', unsafe_allow_html=True)
             
             if input_method == "Upload files directly":
                 if not uploaded_files:
-                    st.warning("Please upload at least one resume file.")
+                    st.warning("Please upload at least one candidate resume.")
                     st.markdown('</div>', unsafe_allow_html=True)
                     return
                 
@@ -501,35 +501,35 @@ def main():
                 progress_bar = st.progress(0)
                 
                 for i, file in enumerate(uploaded_files):
-                    progress_text.markdown(f'<div class="processing-info">Processing: {file.name} ({i+1}/{len(uploaded_files)})</div>', unsafe_allow_html=True)
+                    progress_text.markdown(f'<div class="processing-info">Analyzing candidate: {file.name} ({i+1}/{len(uploaded_files)})</div>', unsafe_allow_html=True)
                     resume_text = extract_text_from_file(file)
                     
                     if resume_text:
-                        with st.spinner(f"AI is evaluating {file.name}..."):
+                        with st.spinner(f"AI is evaluating candidate {file.name}..."):
                             score, feedback = resume_agent.evaluate_resume(resume_text, job_description)
                             
                             results.append({
-                                "Resume": file.name,
-                                "Score": score,
-                                "Feedback": feedback,
-                                "Status": "Pass" if score >= score_threshold else "Fail"
+                                "Candidate": file.name,
+                                "Match Score": score,
+                                "Assessment": feedback,
+                                "Status": "Qualified" if score >= score_threshold else "Not Qualified"
                             })
                     else:
                         results.append({
-                            "Resume": file.name,
-                            "Score": 0,
-                            "Feedback": "Could not extract text from file.",
+                            "Candidate": file.name,
+                            "Match Score": 0,
+                            "Assessment": "Could not extract text from resume file.",
                             "Status": "Error"
                         })
                     
                     progress_bar.progress((i + 1) / len(uploaded_files))
                 
                 progress_text.empty()
-                display_results(results)
+                display_results(results, score_threshold)
             
             else:  # Google Drive link
                 if not drive_link:
-                    st.warning("Please provide a Google Drive link.")
+                    st.warning("Please provide a Google Drive link with candidate resumes.")
                     st.markdown('</div>', unsafe_allow_html=True)
                     return
                 
@@ -552,11 +552,11 @@ def main():
                     
                     if file_metadata['mimeType'] == 'application/vnd.google-apps.folder':
                         # Process folder
-                        st.info("Processing folder from Google Drive...")
+                        st.info("Processing candidate pool from Google Drive folder...")
                         files = list_files_in_folder(drive_service, file_id)
                         
                         if not files:
-                            st.warning("No files found in the specified folder.")
+                            st.warning("No resumes found in the specified folder.")
                             st.markdown('</div>', unsafe_allow_html=True)
                             return
                         
@@ -574,12 +574,12 @@ def main():
                         valid_files = [f for f in files if f['mimeType'] in supported_mime_types]
                         
                         if not valid_files:
-                            st.warning("No supported files found in the folder. Please ensure your folder contains PDF, DOCX, or TXT files.")
+                            st.warning("No supported resume files found in the folder. Please ensure your folder contains PDF, DOCX, or TXT files.")
                             st.markdown('</div>', unsafe_allow_html=True)
                             return
                             
                         for i, file in enumerate(valid_files):
-                            progress_text.markdown(f'<div class="processing-info">Processing: {file["name"]} ({i+1}/{len(valid_files)})</div>', unsafe_allow_html=True)
+                            progress_text.markdown(f'<div class="processing-info">Analyzing candidate: {file["name"]} ({i+1}/{len(valid_files)})</div>', unsafe_allow_html=True)
                             
                             file_content = download_file_from_drive(drive_service, file['id'])
                             
@@ -594,30 +594,30 @@ def main():
                             os.unlink(temp_path)
                             
                             if resume_text:
-                                with st.spinner(f"AI is evaluating {file['name']}..."):
+                                with st.spinner(f"AI is evaluating candidate {file['name']}..."):
                                     score, feedback = resume_agent.evaluate_resume(resume_text, job_description)
                                     
                                     results.append({
-                                        "Resume": file['name'],
-                                        "Score": score,
-                                        "Feedback": feedback,
-                                        "Status": "Pass" if score >= score_threshold else "Fail"
+                                        "Candidate": file['name'],
+                                        "Match Score": score,
+                                        "Assessment": feedback,
+                                        "Status": "Qualified" if score >= score_threshold else "Not Qualified"
                                     })
                             else:
                                 results.append({
-                                    "Resume": file['name'],
-                                    "Score": 0,
-                                    "Feedback": "Could not extract text from file.",
+                                    "Candidate": file['name'],
+                                    "Match Score": 0,
+                                    "Assessment": "Could not extract text from resume file.",
                                     "Status": "Error"
                                 })
                             
                             progress_bar.progress((i + 1) / len(valid_files))
                         
                         progress_text.empty()
-                        display_results(results)
+                        display_results(results, score_threshold)
                     else:
                         # Process single file
-                        st.info("Processing single file from Google Drive...")
+                        st.info("Processing single candidate resume from Google Drive...")
                         file_metadata = drive_service.files().get(fileId=file_id, fields='name').execute()
                         file_name = file_metadata['name']
                         
@@ -634,17 +634,17 @@ def main():
                         os.unlink(temp_path)
                         
                         if resume_text:
-                            with st.spinner(f"AI is evaluating {file_name}..."):
+                            with st.spinner(f"AI is evaluating candidate {file_name}..."):
                                 score, feedback = resume_agent.evaluate_resume(resume_text, job_description)
                                 
                                 results = [{
-                                    "Resume": file_name,
-                                    "Score": score,
-                                    "Feedback": feedback,
-                                    "Status": "Pass" if score >= score_threshold else "Fail"
+                                    "Candidate": file_name,
+                                    "Match Score": score,
+                                    "Assessment": feedback,
+                                    "Status": "Qualified" if score >= score_threshold else "Not Qualified"
                                 }]
                                 
-                                display_results(results)
+                                display_results(results, score_threshold)
                         else:
                             st.error(f"Could not extract text from {file_name}.")
                 
@@ -657,86 +657,86 @@ def main():
     st.markdown(
         """
         <div class="footer">
-            <p>AI Recruiter | Powered by Gemini AI</p>
+            <p>AI Recruiter | Intelligent Talent Acquisition Platform | Powered by Gemini AI</p>
         </div>
         """,
         unsafe_allow_html=True
     )
 
 # Function to display results
-def display_results(results):
+def display_results(results, threshold):
     st.markdown('<div class="section-container">', unsafe_allow_html=True)
-    st.markdown('<h2 class="section-title">Evaluation Results</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Talent Assessment Results</h2>', unsafe_allow_html=True)
     
     # Convert to DataFrame
     df = pd.DataFrame(results)
     
     # Calculate statistics
     total = len(df)
-    passed = len(df[df["Status"] == "Pass"])
-    failed = len(df[df["Status"] == "Fail"])
+    qualified = len(df[df["Status"] == "Qualified"])
+    not_qualified = len(df[df["Status"] == "Not Qualified"])
     error = len(df[df["Status"] == "Error"])
     
     # Display summary metrics
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("Total Resumes", total)
+        st.metric("Total Candidates", total)
     with col2:
-        st.metric("Passed", passed, f"{passed/total*100:.1f}%" if total > 0 else "0%")
+        st.metric("Qualified", qualified, f"{qualified/total*100:.1f}%" if total > 0 else "0%")
     with col3:
-        st.metric("Failed", failed, f"{failed/total*100:.1f}%" if total > 0 else "0%")
+        st.metric("Not Qualified", not_qualified, f"{not_qualified/total*100:.1f}%" if total > 0 else "0%")
     with col4:
         st.metric("Errors", error, f"{error/total*100:.1f}%" if total > 0 else "0%")
     
     # Display passed resumes
-    st.markdown('<h3 style="color: #4CAF50; margin-top: 20px;">Passed Resumes</h3>', unsafe_allow_html=True)
-    passed_df = df[df["Status"] == "Pass"].sort_values(by="Score", ascending=False).reset_index(drop=True)
+    st.markdown('<h3 style="color: #4CAF50; margin-top: 20px;">Qualified Candidates</h3>', unsafe_allow_html=True)
+    qualified_df = df[df["Status"] == "Qualified"].sort_values(by="Match Score", ascending=False).reset_index(drop=True)
     
-    if not passed_df.empty:
-        for _, row in passed_df.iterrows():
+    if not qualified_df.empty:
+        for _, row in qualified_df.iterrows():
             st.markdown(
                 f"""
                 <div class="card card-pass">
-                    <h4>{row['Resume']}</h4>
-                    <p><span class="score-badge badge-pass">Score: {row['Score']:.1f}/10</span></p>
-                    <p><strong>Feedback:</strong> {row['Feedback']}</p>
+                    <h4>{row['Candidate']}</h4>
+                    <p><span class="score-badge badge-pass">Match Score: {row['Match Score']:.1f}/10</span></p>
+                    <p><strong>Assessment:</strong> {row['Assessment']}</p>
                 </div>
                 """, 
                 unsafe_allow_html=True
             )
     else:
-        st.info("No resumes passed the evaluation.")
+        st.info(f"No candidates matched your qualifications threshold of {threshold}. Consider adjusting your threshold or job requirements.")
     
     # Display failed resumes
-    st.markdown('<h3 style="color: #F44336; margin-top: 20px;">Failed Resumes</h3>', unsafe_allow_html=True)
-    failed_df = df[df["Status"] == "Fail"].sort_values(by="Score", ascending=False).reset_index(drop=True)
+    st.markdown('<h3 style="color: #F44336; margin-top: 20px;">Non-Qualified Candidates</h3>', unsafe_allow_html=True)
+    not_qualified_df = df[df["Status"] == "Not Qualified"].sort_values(by="Match Score", ascending=False).reset_index(drop=True)
     
-    if not failed_df.empty:
-        for _, row in failed_df.iterrows():
+    if not not_qualified_df.empty:
+        for _, row in not_qualified_df.iterrows():
             st.markdown(
                 f"""
                 <div class="card card-fail">
-                    <h4>{row['Resume']}</h4>
-                    <p><span class="score-badge badge-fail">Score: {row['Score']:.1f}/10</span></p>
-                    <p><strong>Feedback:</strong> {row['Feedback']}</p>
+                    <h4>{row['Candidate']}</h4>
+                    <p><span class="score-badge badge-fail">Match Score: {row['Match Score']:.1f}/10</span></p>
+                    <p><strong>Assessment:</strong> {row['Assessment']}</p>
                 </div>
                 """, 
                 unsafe_allow_html=True
             )
     else:
-        st.info("No resumes failed the evaluation.")
+        st.info("All candidates have met your qualification threshold.")
     
     # Display error resumes
     error_df = df[df["Status"] == "Error"].reset_index(drop=True)
     if not error_df.empty:
-        st.markdown('<h3 style="color: #FF9800; margin-top: 20px;">Resumes with Errors</h3>', unsafe_allow_html=True)
+        st.markdown('<h3 style="color: #FF9800; margin-top: 20px;">Processing Errors</h3>', unsafe_allow_html=True)
         for _, row in error_df.iterrows():
             st.markdown(
                 f"""
                 <div class="card card-error">
-                    <h4>{row['Resume']}</h4>
+                    <h4>{row['Candidate']}</h4>
                     <p><span class="score-badge badge-error">Error</span></p>
-                    <p><strong>Message:</strong> {row['Feedback']}</p>
+                    <p><strong>Message:</strong> {row['Assessment']}</p>
                 </div>
                 """, 
                 unsafe_allow_html=True
@@ -745,9 +745,9 @@ def display_results(results):
     # Download results as CSV
     csv = df.to_csv(index=False)
     st.download_button(
-        label="Download Results as CSV",
+        label="Download Talent Assessment Report",
         data=csv,
-        file_name="resume_evaluation_results.csv",
+        file_name="ai_recruiter_talent_assessment.csv",
         mime="text/csv"
     )
     

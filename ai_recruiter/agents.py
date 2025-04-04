@@ -11,8 +11,8 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
-class ResumeEvaluationAgent:
-    """Agent for evaluating resumes against job descriptions using Gemini."""
+class TalentEvaluationAgent:
+    """AI agent for evaluating candidate resumes against job descriptions using Gemini. """
     
     def __init__(self):
         # Initialize Gemini model
