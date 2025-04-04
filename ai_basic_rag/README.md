@@ -74,7 +74,3 @@ Basic RAG (Retrieval-Augmented Generation) enhances Large Language Models by:
 3. Generating responses based on both the user's query and the retrieved context
 
 Unlike agentic RAG, this system doesn't have autonomous tool-calling capabilities.
-
-## License
-
-MIT License 
