@@ -9,6 +9,7 @@ This repository contains production-ready applications that leverage state-of-th
 ## 🚀 Featured Applications
 
 - [AI Health Advisor](/ai_health_advisor_agent/)
+- [AI RAG Application](/ai_basic_rag/)
 
 ## 💡 Why This Repository?
 

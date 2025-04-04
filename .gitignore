@@ -52,3 +52,5 @@ __pycache__
 *.csv
 *.jsonl
 *.jsonl.gz
+
+tmp/
