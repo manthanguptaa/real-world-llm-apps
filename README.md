@@ -8,6 +8,7 @@ This repository contains production-ready applications that leverage state-of-th
 
 ## 🚀 Featured Applications
 
+- [AI Browser Agent](/ai_browser_agent/)
 - [AI Health Advisor](/ai_health_advisor_agent/)
 - [AI RAG Application](/ai_basic_rag/)
 - [AI Recruiter](/ai_recruiter/)
