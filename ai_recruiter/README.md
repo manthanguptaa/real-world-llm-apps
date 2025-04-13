@@ -2,6 +2,8 @@
 
 An intelligent talent acquisition platform that helps HR professionals and recruiters evaluate candidates based on job requirements. The application assesses candidate resumes against job descriptions using advanced AI, providing a comprehensive match score and detailed feedback to streamline your hiring process.
 
+https://github.com/user-attachments/assets/2753ae0e-4861-48f3-892b-56c6b9e374e9
+
 ## Features
 
 - Upload candidate resumes directly or via Google Drive links (both single files and folders)
