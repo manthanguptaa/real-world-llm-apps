@@ -193,7 +193,7 @@ def get_first_item_selectors(url: str) -> List[str]:
         return FIRST_ITEM_SELECTORS[site]
     return GENERIC_FIRST_ITEM_SELECTORS
 
-def is_known_searchable_site(url: str) -> bool:
+def is_known_searchable_site(url: str) -> list:
     """
     Check if the current site is a known site with search capabilities.
     
@@ -201,6 +201,18 @@ def is_known_searchable_site(url: str) -> bool:
         url: The URL to analyze
         
     Returns:
-        True if the site is known to be searchable, False otherwise
+        List of known searchable site domains
     """
-    return get_site_name(url) is not None 
+    known_searchable_sites = [
+        "google.com",
+        "bing.com",
+        "duckduckgo.com",
+        "yahoo.com",
+        "youtube.com",
+        "amazon.com",
+        "wikipedia.org",
+        "reddit.com",
+        "twitter.com",
+        "linkedin.com"
+    ]
+    return known_searchable_sites 
