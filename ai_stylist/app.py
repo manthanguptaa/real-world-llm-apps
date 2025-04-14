@@ -3,8 +3,11 @@ from PIL import Image
 from agent import StylistAI
 
 def main():
-    stylist = StylistAI()
     st.title("Stylist AI")
+    
+    # Initialize StylistAI with API key from Streamlit secrets
+    api_key = st.secrets["GEMINI_API_KEY"]
+    stylist = StylistAI(api_key=api_key)
     
     uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "jpeg", "png"])
 
@@ -21,10 +24,12 @@ def main():
 
         if st.button("Give Tips"):
             try:
+                # Encode image to base64
+                encoded_image = StylistAI.encode_image_to_base64(image)
                 analysis = stylist.generate_style_tips(image, style_icon)
                 st.subheader("Stylist's Analysis:")
                 st.markdown(analysis)
-            except Exception as e:
+            except Exception as e:  
                 st.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":

@@ -1,12 +1,11 @@
 import io
 import base64
 import google.generativeai as genai
-import streamlit as st
 
 class StylistAI:
-    def __init__(self):
+    def __init__(self, api_key):
         # Configure Gemini API
-        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-1.5-flash')
         self.base_prompt = self._get_base_prompt()
 
@@ -47,38 +46,14 @@ Use a tone that's practical, self-improvement focused, and motivating without be
             f"The style icon I admire: {style_icon}"
         )
 
-    def generate_style_tips(self, image, style_icon):
+    def generate_style_tips(self, encoded_image, style_icon):
         """Generate style tips based on the uploaded image and chosen style icon."""
         if not style_icon:
             raise ValueError("Please provide a style icon name")
             
         try:
             prompt = self._update_prompt_with_icon(style_icon)
-            response = self.model.generate_content([prompt, image])
+            response = self.model.generate_content([prompt, encoded_image])
             return response.text
         except Exception as e:
             raise Exception(f"Error generating style tips: {str(e)}")
-
-    def run(self):
-        st.title("Stylist AI")
-        
-        uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "jpeg", "png"])
-
-        if uploaded_file is not None:
-            # Read and display the image
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image.", use_column_width=True)
-
-            # Get style icon name from user
-            style_icon = st.text_input(
-                "Enter the name of a style icon or celebrity whose look you admire:",
-                placeholder="e.g., Ryan Gosling, Zendaya, Harry Styles"
-            )
-
-            if st.button("Give Tips"):
-                try:
-                    analysis = self.generate_style_tips(image, style_icon)
-                    st.subheader("Stylist's Analysis:")
-                    st.markdown(analysis)
-                except Exception as e:
-                    st.error(f"An error occurred: {e}")
