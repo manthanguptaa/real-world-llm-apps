@@ -4,6 +4,8 @@
 
 AI Browser Agent combines the power of GPT-4o, computer vision, and sophisticated DOM understanding to create a truly intelligent browser automation tool that understands your intentions and executes complex tasks on the web.
 
+https://github.com/user-attachments/assets/1e3969be-2869-43a4-9d5d-82bd7a07b76c
+
 ## ✨ Key Features
 
 ### 🧠 Natural Language Control

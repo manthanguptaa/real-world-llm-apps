@@ -47,6 +47,7 @@ st.markdown("""
         border-radius: 10px;
         margin-bottom: 1rem;
         border-left: 5px solid #1976D2;
+        color: #000000;
     }
     .chat-message-ai {
         background-color: #F1F8E9;
@@ -54,6 +55,14 @@ st.markdown("""
         border-radius: 10px;
         margin-bottom: 1rem;
         border-left: 5px solid #43A047;
+        color: #000000;
+    }
+    .chat-message-user strong, .chat-message-ai strong {
+        color: #1E88E5;
+        font-size: 1.1em;
+    }
+    .chat-message-ai strong {
+        color: #43A047;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -263,7 +272,7 @@ with col1:
                     })
                     
                     # Clear the input box (requires a rerun)
-                    st.experimental_rerun()
+                    st.rerun()
                     
                 except Exception as e:
                     st.error(f"Error generating response: {str(e)}")
@@ -279,4 +288,4 @@ with col1:
 with col2:
     if st.button("Clear Chat", key="clear_chat"):
         clear_chat()
-        st.experimental_rerun() 
+        st.rerun() 
