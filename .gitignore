@@ -47,7 +47,6 @@ Thumbs.db
 __pycache__
 .env
 *.pdf
-*.txt
 *.json
 *.csv
 *.jsonl
