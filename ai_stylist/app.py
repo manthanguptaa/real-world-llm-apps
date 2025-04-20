@@ -1,12 +1,15 @@
 import streamlit as st
 from PIL import Image
 from agent import StylistAI
+from dotenv import load_dotenv
+import os
 
 def main():
     st.title("Stylist AI")
     
     # Initialize StylistAI with API key from Streamlit secrets
-    api_key = st.secrets["GEMINI_API_KEY"]
+    load_dotenv()
+    api_key = os.getenv("GEMINI_API_KEY")
     stylist = StylistAI(api_key=api_key)
     
     uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "jpeg", "png"])
