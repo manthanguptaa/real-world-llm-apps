@@ -4,8 +4,9 @@ import time
 
 import PyPDF2
 import streamlit as st
-from agents import StudyAssistant
 from dotenv import load_dotenv
+
+from agents import StudyAssistant
 
 # Set basic page config
 st.set_page_config(

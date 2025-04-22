@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Tuple
 from dotenv import load_dotenv
 from openai import OpenAI
 from pymilvus.exceptions import ConnectionNotExistException
+
 from vector_store import StudyMaterialsStore
 
 load_dotenv()
