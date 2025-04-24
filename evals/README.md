@@ -4,6 +4,8 @@
 
 Evals provides a simple yet powerful way to evaluate AI-generated content using state-of-the-art large language models. Whether you're comparing model versions, tuning prompts, or assessing content quality, Evals gives you reliable, consistent metrics with minimal setup.
 
+https://github.com/user-attachments/assets/3607eda9-9bba-45d1-b760-0eb448bc5a35
+
 ## ✨ Key Features
 
 - **Customizable Criteria** - Define exactly what aspects of responses you want to evaluate
