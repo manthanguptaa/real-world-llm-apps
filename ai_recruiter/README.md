@@ -19,7 +19,7 @@ https://github.com/user-attachments/assets/2753ae0e-4861-48f3-892b-56c6b9e374e9
 
 ```bash
 git clone git@github.com:manthanguptaa/real-world-llm-apps.git
-cd ai_recruiter
+cd real-world-llm-apps/ai_recruiter/
 ```
 
 ### 2. Setting up virtual environment
