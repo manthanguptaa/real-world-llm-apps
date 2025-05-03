@@ -1,0 +1,11 @@
+streamlit==1.32.0
+pandas==2.2.1
+numpy==1.26.4
+google-ai-generativelanguage==0.6.15
+google-api-core==2.24.1
+google-api-python-client==2.163.0
+google-auth==2.38.0
+google-auth-httplib2==0.2.0
+google-generativeai==0.8.4
+googleapis-common-protos==1.69.0
+python-dotenv>=1.0.0
